@@ -106,9 +106,16 @@ extractedData <-
     )])
 
 # clean up the names
-# i.e.(tBodyAcc-mean()-X becomes tbodyacc.mean.x)
-setnames(extractedData,
-         gsub("-([a-z]*)\\(\\)-*", ".\\1.", tolower(colnames(extractedData))))
+# i.e.(tBodyAcc-mean()-X becomes timebodyaccelerometermeanX)
+setnames(extractedData, gsub("^t", "time", tolower(names(extractedData))))
+setnames(extractedData, gsub("^f", "frequency", names(extractedData)))
+setnames(extractedData, gsub("acc", "accelerometer", names(extractedData)))
+setnames(extractedData, gsub("-([a-z]*)\\(\\)-*", "\\1", names(extractedData)))
+setnames(extractedData, gsub("mag", "magnitude", names(extractedData)))
+setnames(extractedData, gsub("gyro", "gyroscope", names(extractedData)))
+setnames(extractedData, gsub("bodybody", "body", names(extractedData)))
+setnames(extractedData, gsub("std", "SD", names(extractedData)))
+setnames(extractedData, gsub("mean", "MEAN", names(extractedData)))
 
 # remove the large data set, we have the data we wanted
 rm(fullData)
