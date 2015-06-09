@@ -40,6 +40,7 @@ the requested averages and save that off to a text data file called tidydataset.
 To read the tidydataset.txt into R and view it, the following commands may be used:
 
 tidydata <- read.table("tidydataset.txt", header = T)
+
 View(tidydata)
 
 
