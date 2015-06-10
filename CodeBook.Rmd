@@ -1,0 +1,80 @@
+---
+title: "Code Book"
+date: "Wednesday June 10 2015"
+output: 
+    md_document:
+        variant: markdown_github
+---
+
+## Project Description
+The purpose of this project is to demonstrate your ability to collect, work with, and clean a data set. The goal is to prepare tidy data that can be used for later analysis. You will be graded by your peers on a series of yes/no questions related to the project. You will be required to submit: 1) a tidy data set as described below, 2) a link to a Github repository with your script for performing the analysis, and 3) a code book that describes the variables, the data, and any transformations or work that you performed to clean up the data called CodeBook.md. You should also include a README.md in the repo with your scripts. This repo explains how all of the scripts work and how they are connected.  
+
+One of the most exciting areas in all of data science right now is wearable computing - see for example this article . Companies like Fitbit, Nike, and Jawbone Up are racing to develop the most advanced algorithms to attract new users. The data linked to from the course website represent data collected from the accelerometers from the Samsung Galaxy S smartphone. A full description is available at the site where the data was obtained:  
+
+http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones 
+
+Here are the data for the project:
+
+https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+
+You should create one R script called ```run_analysis.R``` that does the following.
+
+1. Merges the training and the test sets to create one data set.
+2. Extracts only the measurements on the mean and standard deviation for each measurement.
+3. Uses descriptive activity names to name the activities in the data set
+4. Appropriately labels the data set with descriptive variable names.
+5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.  
+
+## Study design and data processing
+
+### Collection of the raw data
+The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years.  Each person performed six activities (WALKING, WALKING UPSTAIRS, WALKING DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist.  Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz.  The experiments have been video-recorded to label the data manually.  The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data.  
+
+The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window).  The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity.  The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used.  From each window, a vector of features was obtained by calculating variables from the time and frequency domain.  
+
+### Notes on the original (raw) data
+The features selected for this database come from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ.  These time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz.  Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise.  The acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ)
+
+The body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
+
+Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag.  
+
+## Creating the tidy datafile
+
+### Guide to create the tidy data file
+The ```run_analysis.R``` script was created with the idea in mind to be self sufficient, to download and extract the necessary files from the zipped archive.  However if the archive already exists in the current working directory the script will use the existing file skipping the download step.  As a result the zip file does not need to be extracted prior to running the run analysis script.  As part of the processing of the main data from the files it will create a file data.txt which is a monolithic file of all the data combined prior to the extraction for the tidy set this is saved simply to save time and re-processing should the script need to be re-run it may be deleted at the users discretion.  The final output of the script is a file named tidydataset.txt as described above in the project section.  
+
+### Cleaning of the data
+Files used from the archive:
+
+            File Name                                   File Description  
+    UCI HAR Dataset/activity_labels.txt         Activity description (training & testing)
+    UCI HAR Dataset/features.txt                Variable Names (training & testing)
+    UCI HAR Dataset/train/subject_train.txt     Subject Id's (training)
+    UCI HAR Dataset/train/X_train.txt           Observation estimates (training)
+    UCI HAR Dataset/train/y_train.txt           Activity Id's (training)
+    UCI HAR Dataset/test/subject_test.txt       Subject Id's (testing)
+    UCI HAR Dataset/test/X_test.txt             Observation estimates (testing)
+    UCI HAR Dataset/test/y_test.txt             Activity Id's (testing)
+
+further information on the processing steps can be found in the README.md
+
+
+## Description of the variables in the tidydataset.txt file
+```{r eval = T, echo = F}
+    tds <- read.table("tidydataset.txt", header = T)
+    head(str(tds),2)
+```  
+
+### Abbreviations and units of measurement for the above variables  
+- Leading "time" or "frequency" denotes a time or frequency domain measurement.
+- body = Movement of the body.
+- gravity = Acceleration of gravity.
+- accelerometer = Accelerometer measurement in g's.
+- gyroscope = Gryroscope measurement in g/sec.
+- jerk = Sudden movement measured in rad/sec/sec.
+- magnitude = Magnitude of movement.
+- MEAN[X,Y,Z] = Mean calculated and axis.
+- SD[X,Y,Z] = Standard deviation calculated and axis.
+
+This tidy data set is a set of variables for each activity and subject. The original data (10299 instances) was grouped by 30 subjects and 6 activities then for each of the 66 variables of mean and standard deviation an average was calculated. The dataset (see above) contains 33 columns of mean variables and 33 columns of standard deviation variables, the first row is the header information.
